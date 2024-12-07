@@ -1,78 +1,55 @@
 <template>
-  <div>
-    <h2>Available Lessons</h2>
-    <div v-for="lesson in lessons" :key="lesson.id" class="lesson-item">
-      <p>{{ lesson.topic }} - {{ lesson.price }} USD</p>
-      <button @click="addToCart(lesson)">Add to Cart</button>
+  <div v-for="lesson in sortedLessons" :key="lesson.id" class="lesson-item">
+    <h2>{{ lesson.title }}</h2>
+    <figure v-if="lesson.image">
+      <img :src="lesson.image" alt="Lesson image">
+    </figure>
+    <p>{{ lesson.description }}</p>
+    <p>Price: {{ lesson.price }} USD</p>
+    <p>Available stock: {{ lesson.availableInventory - cartCount(lesson.id) }}</p>
+    <button @click="addToCart(lesson)" v-if="canAddToCart(lesson)">Add to cart</button>
+    <button disabled v-else>Add to cart</button>
+    <span v-if="lesson.availableInventory === cartCount(lesson.id)">All out!</span>
+    <span v-else-if="lesson.availableInventory - cartCount(lesson.id) < 5">
+      Only {{ lesson.availableInventory - cartCount(lesson.id) }} left!
+    </span>
+    <span v-else>Buy now!</span>
+    <div>
+      <span v-for="n in lesson.rating" :key="'star-' + n">★</span>
+      <span v-for="n in 5 - lesson.rating" :key="'empty-star-' + n">☆</span>
     </div>
   </div>
 </template>
 
 <script>
-import { useCartStore } from '../stores/cartStore';
-
 export default {
-  name: 'Lessons',
-  data() {
-    return {
-      lessons: [
-        { id: 1, topic: 'Math', price: 100 },
-        { id: 2, topic: 'Science', price: 120 },
-      ],
-    };
+  props: {
+    lessons: Array,  // Pass lessons as a prop
+    cart: Array,     // Pass cart as a prop
   },
   methods: {
     addToCart(lesson) {
-      const cart = useCartStore();
-      cart.addToCart(lesson);
+      this.$emit('add-to-cart', lesson.id);
+    },
+    canAddToCart(lesson) {
+      return lesson.availableInventory > this.cartCount(lesson.id);
+    },
+    cartCount(id) {
+      return this.cart.filter(item => item === id).length;
+    }
+  },
+  computed: {
+    sortedLessons() {
+      return this.lessons.sort((a, b) => a.price - b.price);
     },
   },
-}
+};
 </script>
 
 <style scoped>
-.lessons {
-  padding: 20px;
-}
-
-h2 {
-  text-align: center;
-  font-size: 2.5em;
-  color: #333;
-  margin-bottom: 30px;
-}
-
 .lesson-item {
-  background-color: #f9f9f9;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.lesson-title {
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #333;
-}
-
-.lesson-price {
-  font-size: 1.2em;
-  color: #777;
-}
-
-.add-to-cart-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s;
-}
-
-.add-to-cart-btn:hover {
-  background-color: #45a049;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 </style>
