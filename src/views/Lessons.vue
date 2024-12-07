@@ -1,15 +1,16 @@
 <template>
-  <div class="lessons">
+  <div>
     <h2>Available Lessons</h2>
     <div v-for="lesson in lessons" :key="lesson.id" class="lesson-item">
-      <p class="lesson-title">{{ lesson.topic }}</p>
-      <p class="lesson-price">{{ lesson.price }} USD</p>
-      <button @click="addToCart(lesson)" class="add-to-cart-btn">Add to Cart</button>
+      <p>{{ lesson.topic }} - {{ lesson.price }} USD</p>
+      <button @click="addToCart(lesson)">Add to Cart</button>
     </div>
   </div>
 </template>
 
 <script>
+import { useCartStore } from '../stores/cartStore';
+
 export default {
   name: 'Lessons',
   data() {
@@ -22,7 +23,7 @@ export default {
   },
   methods: {
     addToCart(lesson) {
-      const cart = this.$pinia.cartStore;
+      const cart = useCartStore();
       cart.addToCart(lesson);
     },
   },
