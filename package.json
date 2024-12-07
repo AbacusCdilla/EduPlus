@@ -16,17 +16,18 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
+    "@testing-library/vue": "^8.1.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitest/eslint-plugin": "1.1.10",
+    "@vitest/ui": "^2.1.8",
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/test-utils": "^2.4.6",
-    "cypress": "^13.16.0",
+    "cypress": "^13.16.1",
     "eslint": "^9.14.0",
     "eslint-plugin-cypress": "^4.1.0",
     "eslint-plugin-oxlint": "^0.11.0",
@@ -34,10 +35,11 @@
     "jsdom": "^25.0.1",
     "npm-run-all2": "^7.0.1",
     "oxlint": "^0.11.0",
+    "pinia": "^2.3.0",
     "prettier": "^3.3.3",
     "start-server-and-test": "^2.0.8",
     "vite": "^6.0.1",
     "vite-plugin-vue-devtools": "^7.6.5",
-    "vitest": "^2.1.5"
+    "vitest": "^2.1.8"
   }
 }
